@@ -6,6 +6,12 @@ const NavBar = () => {
             <li>
               <a>All Toys</a>
             </li>
+            <li>
+              <a>My Toys</a>
+            </li>
+            <li>
+              <a>Blogs</a>
+            </li>
     </>
   return (
     <div className="navbar bg-base-100 max-w-7xl mx-auto ">
