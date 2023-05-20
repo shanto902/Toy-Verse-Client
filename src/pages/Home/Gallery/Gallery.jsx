@@ -19,7 +19,7 @@ const Gallery = () => {
         <img
           alt="gallery"
           className="block h-full w-full rounded-lg object-cover object-center"
-          src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp" />
+          src="https://i.ibb.co/3kHcSxJ/gallery-3.jpg" />
       </div>
     </div>
     <div className="flex w-1/2 flex-wrap">
@@ -27,7 +27,7 @@ const Gallery = () => {
         <img
           alt="gallery"
           className="block h-full w-full rounded-lg object-cover object-center"
-          src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(74).webp" />
+          src="https://i.ibb.co/grWR21B/gallery-1.jpg" />
       </div>
       <div className="w-1/2 p-1 md:p-2">
         <img
@@ -39,7 +39,7 @@ const Gallery = () => {
         <img
           alt="gallery"
           className="block h-full w-full rounded-lg object-cover object-center"
-          src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(77).webp" />
+          src="https://i.ibb.co/7JdgrD7/gallery-2.jpg" />
       </div>
     </div>
   </div>
