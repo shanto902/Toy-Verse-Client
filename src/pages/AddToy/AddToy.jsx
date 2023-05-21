@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const AddToy = () => {
     const {user} = useContext(AuthContext);
-
+    const MySwal = withReactContent(Swal)
 
     const handleAddToCollection = (event) => {
         event.preventDefault();
@@ -32,10 +34,9 @@ const AddToy = () => {
             description: description,
         }
 
-        console.log(newToy)
         form.reset();
 
-        fetch('http://localhost:5000/new-toy',{
+        fetch('https://toy-verse-server-eta.vercel.app/new-toy',{
             method:  'POST',
             headers : {
                 'Content-Type': 'application/json'
@@ -44,8 +45,18 @@ const AddToy = () => {
         })
         .then(data => {
             console.log(data)
-            if(data.insertedId) {
-                console.log("added")
+            if(data.status === 200) {
+                MySwal.fire({
+                    title: <strong>Toy Verse</strong>,
+                    html: <p>1 Item Added Successfully</p>,
+                    icon: "success",
+                  });
+            }else{
+                MySwal.fire({
+                    title: <strong>Toy Verse</strong>,
+                    html: <p>Something is Wrong!! Maybe Server is Down</p>,
+                    icon: "error",
+                  });
             }
         })
 

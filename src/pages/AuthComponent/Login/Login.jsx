@@ -1,9 +1,14 @@
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Login = () => {
-  const { signInUser } = useContext(AuthContext);
+    const MySwal = withReactContent(Swal)
+
+
+  const { signInUser, googleSignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -16,7 +21,33 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         const loggedUser = result.user;
-        console.log(loggedUser)
+        console.log(loggedUser);
+        MySwal.fire({
+            title: <strong>Welcome!</strong>,
+            html: <p>You are Successfully Logged In</p>,
+            icon: "success",
+          });
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        MySwal.fire({
+            title: <strong>Something Wrong!</strong>,
+            html: <p>Email / Password Not Matched</p>,
+            icon: "error",
+          });
+        console.log(error);
+      });
+  };
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        MySwal.fire({
+            title: <strong>Welcome!</strong>,
+            html: <p>You are Successfully Logged In</p>,
+            icon: "success",
+          });
         navigate(from, { replace: true });
       })
       .catch((error) => {
@@ -72,6 +103,7 @@ const Login = () => {
               </Link>
             </p>
           </div>
+          <button onClick={handleGoogleSignIn}>click me</button>
         </div>
       </div>
     </div>

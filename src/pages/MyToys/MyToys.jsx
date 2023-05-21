@@ -1,15 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const MyToys = () => {
   const { user } = useContext(AuthContext);
+  const MySwal = withReactContent(Swal);
   const [toys, setToys] = useState([]);
   const [selectedToy, setSelectedToy] = useState({});
   const [price, setPrice] = useState(selectedToy?.price);
   const [availableQty, setAvailableQty] = useState("");
   const [description, setDescription] = useState("");
 
-  const url = `http://localhost:5000/my-toys?sellerEmail=${user.email}`;
+  const url = `https://toy-verse-server-eta.vercel.app/my-toys?sellerEmail=${user.email}`;
 
   useEffect(() => {
     fetch(url)
@@ -21,22 +24,74 @@ const MyToys = () => {
   }, [url]);
 
   const handleDelete = (id) => {
-    const proceed = confirm("Are you want to delete this item?");
-    if (proceed) {
-      fetch(`http://localhost:5000/toys/${id}`, {
+    Swal.fire({
+        title: 'Are you want to delete this item?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+      fetch(`https://toy-verse-server-eta.vercel.app/toys/${id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
           if (data.deletedCount > 0) {
-            alert("success fully deleted");
+            MySwal.fire({
+                title: <strong>Toy Verse</strong>,
+                html: <p>1 Item Deleted Successfully</p>,
+                icon: "success",
+              });
             const remaining = toys.filter((toy) => toy._id !== id);
             setToys(remaining);
           }
         })
-        .catch((err) => console.log(err));
-    }
+        .catch((err) => {
+
+                MySwal.fire({
+                    title: <strong>Toy Verse</strong>,
+                    html: <p>{err.message}</p>,
+                    icon: "error",
+                  });
+            
+        });
+    
+      fetch(`https://toy-verse-server-eta.vercel.app/toys/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.deletedCount > 0) {
+            MySwal.fire({
+                title: <strong>Toy Verse</strong>,
+                html: <p>1 Item Deleted Successfully</p>,
+                icon: "success",
+              });
+            const remaining = toys.filter((toy) => toy._id !== id);
+            setToys(remaining);
+          }
+        })
+        .catch((err) => {
+
+                MySwal.fire({
+                    title: <strong>Toy Verse</strong>,
+                    html: <p>{err.message}</p>,
+                    icon: "error",
+                  });
+            
+        });
+    
+          Swal.fire('Item deleted!', '', 'success');
+        } else {
+          // Code to execute if the user clicks "No" or closes the modal
+          Swal.fire('Deletion canceled', '', 'info');
+        }
+      });
+
   };
   const handleModal = (id) => {
     const selectedToy = toys.find((toy) => toy._id === id);
@@ -50,34 +105,58 @@ const MyToys = () => {
       availableQuantity: parseFloat(availableQty),
       description: description,
     };
-
-    if (price === {NaN}) {
-        updatedToy.price = parseFloat(selectedToy?.price || 0);
-      }
-      if (availableQty === "") {
-        updatedToy.availableQuantity = parseFloat(selectedToy?.availableQuantity || 0);
-      }
-      if (description === "") {
-        updatedToy.description = selectedToy?.description || "";
-      }
-
+  
+    if (price === "") {
+      updatedToy.price = parseFloat(selectedToy?.price || 0);
+    }
+    if (availableQty === "") {
+      updatedToy.availableQuantity = parseFloat(selectedToy?.availableQuantity || 0);
+    }
+    if (description === "") {
+      updatedToy.description = selectedToy?.description || "";
+    }
+  
     console.log(updatedToy);
-
-    fetch(`http://localhost:5000/toys/${id}`, {
+  
+    fetch(`https://toy-verse-server-eta.vercel.app/toys/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(updatedToy),
     })
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
         if (data.modifiedCount > 0) {
-          console.log("Updated");
+            MySwal.fire({
+                title: <strong>Toy Verse</strong>,
+                html: <p>1 Item Updated Successfully</p>,
+                icon: "success",
+              });
+          const updatedToys = toys.map((toy) => {
+            if (toy._id === id) {
+              return {
+                ...toy,
+                ...updatedToy,
+              };
+            }
+            return toy;
+          });
+          setToys(updatedToys);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        
+            MySwal.fire({
+                title: <strong>Toy Verse</strong>,
+                html: <p>{err.message}</p>,
+                icon: "error",
+              });
+        
+      });
   };
+  
   return (
     <div>
       <div className="overflow-x-auto w-full min-h-screen">

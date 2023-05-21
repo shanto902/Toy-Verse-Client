@@ -9,7 +9,7 @@ const Category = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:5000/toys")
+    fetch("https://toy-verse-server-eta.vercel.app/toys")
       .then((res) => res.json())
       .then((data) => setToys(data));
   }, []);
