@@ -8,7 +8,7 @@ const Hero = () => {
     <div className="">
       <h1 className="mb-5 text-5xl font-bold">Where Imagination Comes to Life!</h1>
       <p className="mb-5">Step into ToyVerse, the ultimate toy marketplace. Discover a world of endless play possibilities with our diverse selection of toys, games, and collectibles. Explore, connect, and let your imagination soar. Join us today and unlock the magic of play!</p>
-      <button className="btn btn-outline">Get Started</button>
+      <button className="btn">Get Started</button>
     </div>
   </div>
 </div>

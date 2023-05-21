@@ -1,14 +1,30 @@
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../../providers/AuthProvider";
+import { useContext } from "react";
+
 const NavBar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const handleLogOut = () => {
+    logOut()
+      .then()
+      .catch((err) => {
+        console.log(err);
+      });
+  };
     const navItems =  <>
       <li>
-              <a>Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
               <a>All Toys</a>
             </li>
-            <li>
-              <a>My Toys</a>
+           {
+            (user)?(
+              <li>
+              <Link to="/my-toys">My Toys</Link>
             </li>
+            ) : (null)
+           }
             <li>
               <a>Blogs</a>
             </li>
@@ -40,7 +56,7 @@ const NavBar = () => {
           {navItems}
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">Toy Verse</a>
+        <Link to="/" className="btn btn-ghost normal-case text-xl">Toy Verse</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -50,7 +66,25 @@ const NavBar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Get started</a>
+      {user ? (
+              <div className="dropdown dropdown-end">
+              <div tabIndex={0} className="avatar">
+  <div className="w-12 rounded">
+    {
+      user.photoURL ? (<img src={user.photoURL} />) : (<img src="https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg" />)
+    }
+  </div>
+</div>
+              <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>Profile</a></li>
+                <li onClick={handleLogOut}><a>Sign Out</a></li>
+              </ul>
+            </div>
+            ) : (
+              <Link to="/login">
+                <button className="btn ">Log in</button>
+              </Link>
+            )}
       </div>
     </div>
   );

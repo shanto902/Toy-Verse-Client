@@ -1,8 +1,29 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../providers/AuthProvider";
 
 const Login = () => {
+  const { signInUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const handleLogin = (event) => {
     event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    signInUser(email, password)
+      .then((result) => {
+        const loggedUser = result.user;
+        navigate(from, { replace: true });
+        
+
+    
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div className="hero bg-base-200 pt-10">
