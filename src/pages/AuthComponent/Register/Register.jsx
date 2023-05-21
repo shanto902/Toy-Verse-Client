@@ -1,9 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 
+
+
 const Register = () => {
     const { createUser, updateUserData } = useContext(AuthContext);
+    const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
     const handleSignUp = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -19,7 +24,7 @@ const Register = () => {
         updateUserData(createdUser, name, photo);
         console.log(createdUser)
         console.log("User Created")
-        
+        navigate(from, { replace: true });
         // setError("");
         // setSuccess("User Created Successfully");
       })

@@ -11,24 +11,20 @@ const NavBar = () => {
         console.log(err);
       });
   };
-    const navItems =  <>
+  const navItems = (
+    <>
       <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <a>All Toys</a>
-            </li>
-           {
-            (user)?(
-              <li>
-              <Link to="/my-toys">My Toys</Link>
-            </li>
-            ) : (null)
-           }
-            <li>
-              <a>Blogs</a>
-            </li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <a>All Toys</a>
+      </li>
+     
+      <li>
+        <a>Blogs</a>
+      </li>
     </>
+  );
   return (
     <div className="navbar bg-base-100 max-w-7xl mx-auto ">
       <div className="navbar-start ">
@@ -53,38 +49,49 @@ const NavBar = () => {
             tabIndex={0}
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
-          {navItems}
+            {navItems}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost normal-case text-xl">Toy Verse</Link>
+        <Link to="/" className="btn btn-ghost normal-case text-xl">
+          Toy Verse
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-       {
-        navItems
-       }
-        </ul>
+        <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
       <div className="navbar-end">
-      {user ? (
-              <div className="dropdown dropdown-end">
+       
+        {user ? (
+          <div className="tooltip tooltip-left" data-tip={user.displayName}>
+            <div className="dropdown dropdown-end">
               <div tabIndex={0} className="avatar">
-  <div className="w-12 rounded">
-    {
-      user.photoURL ? (<img src={user.photoURL} />) : (<img src="https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg" />)
-    }
-  </div>
-</div>
-              <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a>Profile</a></li>
-                <li onClick={handleLogOut}><a>Sign Out</a></li>
+                <div className="w-10 rounded">
+               
+                  {user.photoURL ? (
+                    <img src={user.photoURL} />
+                  ) : (
+                    <img src="https://static.vecteezy.com/system/resources/previews/001/840/618/original/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg" />
+                  )}
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 w-32 rounded-box"
+              >
+                <li>
+                  <Link to="/my-toys">My Toys</Link>
+                </li>
+                <li onClick={handleLogOut}>
+                  <a>Sign Out</a>
+                </li>
               </ul>
             </div>
-            ) : (
-              <Link to="/login">
-                <button className="btn ">Log in</button>
-              </Link>
-            )}
+          </div>
+        ) : (
+          <Link to="/login">
+            <button className="btn ">Log in</button>
+          </Link>
+        )}
       </div>
     </div>
   );
