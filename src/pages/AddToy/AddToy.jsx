@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 
 const AddToy = () => {
-    const user = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
 
 
     const handleAddToCollection = (event) => {
@@ -44,6 +44,9 @@ const AddToy = () => {
         })
         .then(data => {
             console.log(data)
+            if(data.insertedId) {
+                console.log("added")
+            }
         })
 
 
@@ -74,7 +77,7 @@ const AddToy = () => {
                   type="text"
                   placeholder="Seller Name"
                   name="sellerName"
-                  defaultValue={user?.user?.displayName}
+                  defaultValue={user?.displayName}
                   className="input input-bordered"
                 />
               </div>
@@ -83,7 +86,7 @@ const AddToy = () => {
                   <span className="label-text">Seller Email</span>
                 </label>
                 <input
-                defaultValue={ user?.user?.email}
+                defaultValue={ user?.email}
                 disabled
                   type="email"
                   placeholder="Seller Email"
