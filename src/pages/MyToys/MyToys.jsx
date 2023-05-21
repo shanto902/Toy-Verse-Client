@@ -1,10 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
-import { Link } from "react-router-dom";
 
 const MyToys = () => {
   const { user } = useContext(AuthContext);
   const [toys, setToys] = useState([]);
+  const [selectedToy, setSelectedToy] = useState({});
+  const [price, setPrice] = useState(selectedToy?.price);
+  const [availableQty, setAvailableQty] = useState("");
+  const [description, setDescription] = useState("");
 
   const url = `http://localhost:5000/my-toys?sellerEmail=${user.email}`;
 
@@ -34,6 +37,46 @@ const MyToys = () => {
         })
         .catch((err) => console.log(err));
     }
+  };
+  const handleModal = (id) => {
+    const selectedToy = toys.find((toy) => toy._id === id);
+    setSelectedToy(selectedToy);
+    console.log(selectedToy);
+  };
+
+  const handleUpdateItem = (id) => {
+    const updatedToy = {
+      price: parseFloat(price),
+      availableQuantity: parseFloat(availableQty),
+      description: description,
+    };
+
+    if (price === {NaN}) {
+        updatedToy.price = parseFloat(selectedToy?.price || 0);
+      }
+      if (availableQty === "") {
+        updatedToy.availableQuantity = parseFloat(selectedToy?.availableQuantity || 0);
+      }
+      if (description === "") {
+        updatedToy.description = selectedToy?.description || "";
+      }
+
+    console.log(updatedToy);
+
+    fetch(`http://localhost:5000/toys/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedToy),
+    })
+      .then((data) => {
+        console.log(data);
+        if (data.modifiedCount > 0) {
+          console.log("Updated");
+        }
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div>
@@ -69,9 +112,13 @@ const MyToys = () => {
 
                 <td>{toy.price}</td>
                 <th>
-                  <Link className="btn btn-ghost btn-xs" to={`/toy/${toy._id}`}>
-                    Details
-                  </Link>
+                  <label
+                    htmlFor="my-modal-3"
+                    className="btn btn-ghost btn-xs"
+                    onClick={() => handleModal(toy._id)}
+                  >
+                    open modal
+                  </label>
                   <button
                     className="btn btn-ghost btn-xs"
                     onClick={() => handleDelete(toy._id)}
@@ -84,6 +131,76 @@ const MyToys = () => {
           ))}
         </table>
       </div>
+      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+    {
+        selectedToy && (
+            <div className="modal">
+            <div className="modal-box relative">
+              <label
+                htmlFor="my-modal-3"
+                className="btn btn-sm btn-circle absolute right-2 top-2"
+              >
+                ✕
+              </label>
+              <h3 className="text-lg font-bold">Update item {selectedToy?.name}</h3>
+              <div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Price</span>
+                  </label>
+                  <input
+                    defaultValue={selectedToy?.price}
+                    onChange={(e) => {
+                        setPrice(e.target.value)
+                    }}
+                    type="text"
+                    placeholder="Price"
+                    name="price"
+                    className="input input-bordered"
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Available Quantity</span>
+                  </label>
+                  <input
+                    defaultValue={selectedToy?.availableQuantity}
+                    onChange={(e) =>{
+                        setAvailableQty(e.target.value)
+                    }}
+                    type="number"
+                    placeholder="Available Quantity"
+                    name="availableQty"
+                    className="input input-bordered"
+                  />
+                </div>
+                <div className="form-control mb-5">
+                  <label className="label">
+                    <span className="label-text">Description</span>
+                  </label>
+                  <textarea
+                    defaultValue={selectedToy?.description}
+                    onChange={(e) => {
+                      
+                            setDescription(e.target.value)
+                        
+                    }}
+                    className="textarea textarea-bordered"
+                    placeholder="Description"
+                    name="description"
+                  ></textarea>
+                </div>
+                <button
+                  className="btn block"
+                  onClick={() => handleUpdateItem(selectedToy._id)}
+                >
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+    }
     </div>
   );
 };
