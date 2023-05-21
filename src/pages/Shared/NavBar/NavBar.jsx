@@ -17,7 +17,7 @@ const NavBar = () => {
         <Link to="/">Home</Link>
       </li>
       <li>
-        <a>All Toys</a>
+      <Link to="/all-toys">All Toys</Link>
       </li>
      
       <li>
@@ -80,7 +80,7 @@ const NavBar = () => {
                 className="dropdown-content menu bg-base-100 w-32 rounded-box"
               >
                 <li className="text-center">
-                  <Link to="/my-toys">Add Toy</Link>
+                  <Link to="/add-toy">Add Toy</Link>
                 </li>
                 <li>
                   <Link to="/my-toys">My Toys</Link>
