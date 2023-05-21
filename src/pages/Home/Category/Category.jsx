@@ -28,7 +28,7 @@ const Category = () => {
   return (
     <div className="max-w-7xl mx-auto mt-10 ">
       <Tabs className="mt-10 mb-10" selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
-        <TabList className="flex flex-row items-center w-full justify-center gap-4 text-2xl">
+        <TabList className="flex flex-row items-center w-full justify-center gap-5 text-2xl">
           <Tab
             onClick={() => setSelectedSubcategory("Marvel")}
             className={`rounded p-3 ${tabIndex === 0 ? ' bg-gray-700 text-white' : ''}`}
@@ -60,9 +60,9 @@ const Category = () => {
             <h2>No toys found in this category</h2>
           )}
         </TabPanel>
-        <TabPanel>
+        <TabPanel className="flex flex-row justify-center items-center">
           {filteredToys.length > 0 ? (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
               {filteredToys.map((toy) => (
                 <ToyCard key={toy._id} toy={toy}></ToyCard>
               ))}
@@ -71,9 +71,9 @@ const Category = () => {
             <h2>No toys found in this category</h2>
           )}
         </TabPanel>
-        <TabPanel>
+        <TabPanel className="flex flex-row justify-center items-center">
           {filteredToys.length > 0 ? (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
               {filteredToys.map((toy) => (
                 <ToyCard key={toy._id} toy={toy}></ToyCard>
               ))}

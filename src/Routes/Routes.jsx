@@ -6,6 +6,7 @@ import Register from "../pages/AuthComponent/Register/Register";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import PrivateRoutes from "./PrivateRoutes";
 import MyToys from "../pages/MyToys/MyToys";
+import AllToys from "../pages/AllToys/AllToys";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,12 @@ const router = createBrowserRouter([
         {
           path: '/my-toys',
           element: <PrivateRoutes><MyToys/></PrivateRoutes>
+        },
+        {
+          path: '/all-toys',
+          element: <AllToys />,
+          loader: () => fetch("http://localhost:5000/toys")
+
         }
       ]
     },

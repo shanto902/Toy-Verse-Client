@@ -61,7 +61,8 @@ const NavBar = () => {
       </div>
       <div className="navbar-end">
        
-        {user ? (
+       <div className="flex flex-row justify-between items-center gap-5">
+       {user ? (
           <div className="tooltip tooltip-left" data-tip={user.displayName}>
             <div className="dropdown dropdown-end">
               <div tabIndex={0} className="avatar">
@@ -78,6 +79,9 @@ const NavBar = () => {
                 tabIndex={0}
                 className="dropdown-content menu bg-base-100 w-32 rounded-box"
               >
+                <li className="text-center">
+                  <Link to="/my-toys">Add Toy</Link>
+                </li>
                 <li>
                   <Link to="/my-toys">My Toys</Link>
                 </li>
@@ -92,6 +96,7 @@ const NavBar = () => {
             <button className="btn ">Log in</button>
           </Link>
         )}
+       </div>
       </div>
     </div>
   );

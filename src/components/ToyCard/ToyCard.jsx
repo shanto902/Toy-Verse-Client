@@ -2,7 +2,7 @@
 const ToyCard = ({toy}) => {
     return (
  
-<div className="card w-96 bg-base-100 shadow-xl">
+<div className="card w-96 bg-gray-200 shadow-xl mt-10">
   <figure className="px-10 pt-10">
     <img src={toy.pictureURL} alt="action-fig" className="rounded-xl aspect-square object-cover" />
   </figure>
